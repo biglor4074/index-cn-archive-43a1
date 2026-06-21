@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <title>雨燕直播 · 信息卡片介绍</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #fde9df 0%, #fbd5c0 40%, #f7c1a4 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1.2rem;
+            margin: 0;
+        }
+
+        .cards-wrapper {
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2.2rem;
+        }
+
+        /* 主视觉卡片 —— 暖意渐变背景 + 圆润大卡片 */
+        .hero-card {
+            background: rgba(255, 245, 235, 0.78);
+            backdrop-filter: blur(4px);
+            border-radius: 48px 20px 48px 20px;
+            padding: 3.2rem 2.4rem;
+            box-shadow: 0 20px 40px -12px rgba(160, 90, 60, 0.2);
+            border: 1px solid rgba(255, 255, 245, 0.6);
+            transition: box-shadow 0.25s;
+        }
+
+        .hero-card:hover {
+            box-shadow: 0 24px 48px -12px rgba(170, 80, 50, 0.25);
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 7vw, 3.2rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #543b31;
+            line-height: 1.2;
+            margin-bottom: 0.6rem;
+        }
+
+        .hero-sub {
+            font-size: 1.1rem;
+            color: #6b4a3a;
+            background: rgba(245, 215, 190, 0.3);
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+            margin-bottom: 1.4rem;
+            border: 1px solid #ecd2be;
+        }
+
+        .hero-text {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #3c2d25;
+            max-width: 780px;
+        }
+
+        .hero-text a {
+            color: #964b2e;
+            font-weight: 550;
+            text-decoration: none;
+            border-bottom: 2px solid #c9866a;
+            padding-bottom: 0.1rem;
+            transition: border-color 0.15s, color 0.2s;
+        }
+
+        .hero-text a:hover {
+            color: #6e3521;
+            border-bottom-color: #6e3521;
+        }
+
+        /* 三用途卡片 网格 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.8rem;
+        }
+
+        .purpose-card {
+            background: #fffbf7;
+            border-radius: 28px 10px 28px 10px;
+            padding: 1.8rem 1.6rem 2rem;
+            box-shadow: 0 8px 18px rgba(140, 80, 55, 0.08);
+            border: 1px solid rgba(235, 205, 180, 0.3);
+            transition: transform 0.18s, box-shadow 0.2s;
+        }
+
+        .purpose-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 28px -8px rgba(150, 85, 55, 0.15);
+        }
+
+        .purpose-card h3 {
+            font-size: 1.45rem;
+            font-weight: 550;
+            color: #4f372b;
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .purpose-card p {
+            color: #3b2e27;
+            line-height: 1.65;
+            font-size: 0.98rem;
+        }
+
+        .purpose-card p a {
+            color: #964b2e;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1.5px dashed #cc9d85;
+        }
+
+        .purpose-card p a:hover {
+            border-bottom-style: solid;
+            color: #623a28;
+        }
+
+        .tag {
+            background: #f7ddd0;
+            color: #4c3227;
+            padding: 0.2rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 0.6rem;
+            border: 1px solid #eecfbb;
+        }
+
+        /* 适合人群 + 自然链接段落 融合卡片 */
+        .audience-card {
+            background: #fffcf8;
+            border-radius: 30px 12px 30px 12px;
+            padding: 2.2rem 2rem;
+            box-shadow: 0 12px 22px -10px rgba(140, 80, 50, 0.08);
+            border: 1px solid #f0d8c7;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .audience-block {
+            flex: 1 1 240px;
+        }
+
+        .audience-block h2 {
+            font-size: 1.4rem;
+            font-weight: 550;
+            color: #54382b;
+            margin-bottom: 0.8rem;
+            border-left: 6px solid #cb9b7e;
+            padding-left: 0.9rem;
+        }
+
+        .audience-block ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .audience-block li {
+            padding: 0.25rem 0;
+            color: #3a2c24;
+            display: flex;
+            gap: 0.6rem;
+            align-items: baseline;
+            font-size: 0.98rem;
+            line-height: 1.5;
+        }
+
+        .audience-block li::before {
+            content: "·";
+            color: #b06d4e;
+            font-weight: bold;
+            font-size: 1.4rem;
+            line-height: 1;
+        }
+
+        .link-paragraph {
+            flex: 2 1 320px;
+            background: #fcf0e7;
+            padding: 1.4rem 1.6rem;
+            border-radius: 24px 8px 24px 8px;
+            border: 1px solid #e7cfbd;
+        }
+
+        .link-paragraph p {
+            color: #372b24;
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 0.6rem;
+        }
+
+        .link-paragraph strong {
+            color: #633e2b;
+        }
+
+        .link-paragraph a {
+            color: #964b2e;
+            font-weight: 550;
+            text-decoration: none;
+            background: #f7e4d6;
+            padding: 0.15rem 0.7rem;
+            border-radius: 40px;
+            border: 1px solid #dbb6a0;
+            transition: background 0.2s, color 0.15s;
+            white-space: nowrap;
+        }
+
+        .link-paragraph a:hover {
+            background: #e5c6b2;
+            color: #4f3022;
+            border-color: #b48268;
+        }
+
+        /* 提示+FAQ片段 双栏小卡片 */
+        .extra-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 680px) {
+            .extra-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tip-card {
+            background: #fef7f2;
+            border-radius: 24px 8px 24px 8px;
+            padding: 1.4rem 1.6rem;
+            border: 1px solid #eed9cb;
+            box-shadow: 0 6px 12px -6px rgba(120, 70, 45, 0.06);
+        }
+
+        .tip-card h4 {
+            font-weight: 550;
+            color: #5a3b2c;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .tip-card p {
+            color: #3d2e25;
+            font-size: 0.96rem;
+            line-height: 1.6;
+        }
+
+        .faq-card {
+            background: #fef7f2;
+            border-radius: 24px 8px 24px 8px;
+            padding: 1.4rem 1.6rem;
+            border: 1px solid #eed9cb;
+        }
+
+        .faq-card h4 {
+            font-weight: 550;
+            color: #5a3b2c;
+            font-size: 1.1rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .faq-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-q {
+            font-weight: 500;
+            color: #603c2a;
+            font-size: 0.95rem;
+        }
+
+        .faq-a {
+            color: #3d2e25;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            margin-top: 0.1rem;
+            padding-left: 0.5rem;
+            border-left: 3px solid #dcbca8;
+        }
+
+        .faq-a a {
+            color: #964b2e;
+            font-weight: 500;
+            text-decoration: underline wavy #be8b72 1px;
+            text-underline-offset: 4px;
+        }
+
+        .faq-a a:hover {
+            color: #5e3522;
+        }
+
+        /* 页脚小字 */
+        .footer-note {
+            margin-top: 2.2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6d5241;
+            opacity: 0.7;
+            border-top: 1px solid #dfcaba;
+            padding-top: 1.5rem;
+        }
+
+        .footer-note a {
+            color: #6d5241;
+            text-decoration: underline 1px dotted #a1775e;
+        }
+
+        .footer-note a:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="cards-wrapper">
+
+        <!-- 主视觉卡片 hero -->
+        <div class="hero-card">
+            <div class="hero-title">日常对照 · 延伸翻阅</div>
+            <div class="hero-sub">📋 信息卡片 · 暖色导览</div>
+            <div class="hero-text">
+                习惯在生活中随时查找赛事、节目或回放，顺手翻开 <a href="https://index-cn-yuyan.com">雨燕直播</a> 已经成为许多人的日常动作。没有复杂跳转，页面就像一本轻便的频道手册，把不同内容摆放在眼前。从体育到娱乐，从实时赛况到历史集锦，花一两分钟扫一眼，就能找到合口味的直播或回放资源。尤其适合在通勤、午休或者晚间放松时，不紧不慢地浏览、对照、做个小笔记。
+            </div>
+        </div>
+
+        <!-- 用途卡片 三个 -->
+        <div class="card-grid">
+            <div class="purpose-card">
+                <h3>🔍 快速查询</h3>
+                <p>想确认比赛时间、频道或者节目单？在 <a href="https://index-cn-yuyan.com">雨燕直播</a> 按分类扫一眼，通常比翻社交平台更直接。列表清晰，无需反复点击。</p>
+                <span class="tag">对照 · 确认</span>
+            </div>
+            <div class="purpose-card">
+                <h3>📚 延伸阅读</h3>
+                <p>看到一场直播，顺手看看相关集锦、战术分析或幕后花絮。平台整合了不同来源的链接，从一个直播页能自然跳到更多内容片段。</p>
+                <span class="tag">浏览 · 扩展</span>
+            </div>
+            <div class="purpose-card">
+                <h3>🗂️ 收藏参考</h3>
+                <p>把感兴趣的频道或节目记下来，当作备查列表。尤其适合整理周末观赛计划，或者给孩子挑选感兴趣的科普、动画时段。</p>
+                <span class="tag">记录 · 计划</span>
+            </div>
+        </div>
+
+        <!-- 适合人群 + 自然链接段落 -->
+        <div class="audience-card">
+            <div class="audience-block">
+                <h2>常来翻看的人</h2>
+                <ul>
+                    <li>习惯用碎片时间看比分、预告的体育爱好者</li>
+                    <li>想找电影、剧集或综艺回放但不想翻太多 App 的人</li>
+                    <li>学生或家长，需要筛选适合青少年的直播内容</li>
+                    <li>内容收集者：把多个频道当作信息源，做简单整理</li>
+                </ul>
+            </div>
+            <div class="link-paragraph">
+                <p><strong>🔗 自然链接段落</strong> —— 当你想把几场直播串起来，或者想了解某个联赛的下一轮时间，可以把 <a href="https://index-cn-yuyan.com">雨燕直播</a> 当作一个起点。不需要刻意记住入口，日常搜索时经常排在前面。页面内容偏工具向，没有太多干扰，适合安安静静地对照自己关注的节目。也有不少人把它推荐给朋友，当作“直播列表小手册”。</p>
+                <p style="margin-bottom:0;">从单场赛事到系列节目，从语言选项到回放时效，花几分钟就能摸清整体结构。保持探索习惯，但别过度沉迷就好。</p>
+            </div>
+        </div>
+
+        <!-- 提示 + FAQ 摘要 -->
+        <div class="extra-grid">
+            <div class="tip-card">
+                <h4>💡 使用小提示</h4>
+                <p>提前把常用频道添加到浏览器书签文件夹，分段整理（体育、影视、少儿）。直播时间偶有变动，建议开播前5分钟再确认一次。<br>如果遇到页面加载缓慢，可尝试刷新或稍后访问；大部分回放会在直播结束后几小时内上线。</p>
+            </div>
+            <div class="faq-card">
+                <h4>❔ 常见疑问摘要</h4>
+                <div class="faq-item">
+                    <div class="faq-q">Q：回放保留多久？</div>
+                    <div class="faq-a">不同频道差异较大，通常热门赛事保留一周以上，部分频道保留三十天。具体可在 <a href="https://index-cn-yuyan.com">雨燕直播</a> 页面查看每个频道的说明。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q">Q：是否需要注册？</div>
+                    <div class="faq-a">直接浏览即可，大部分内容无需登录。部分互动或收藏功能可能需要简易注册。</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <div class="footer-note">
+            <span>信息卡片 · 以日常对照为视角 · <a href="https://index-cn-yuyan.com">雨燕直播</a> 页面功能持续更新</span>
+        </div>
+    </div>
+</body>
+</html>
